@@ -1,3 +1,4 @@
+import Link from "next/link";
 
 const Navbar = () => {
     return (
@@ -13,23 +14,36 @@ const Navbar = () => {
             <span aria-hidden="true"></span>
           </a>
         </div>
+          <div id="navbarBasicExample" className="navbar-menu">
+            <div className="navbar-start">
+              <a className="navbar-item">
+              </a>
+            </div>
+          </div>
+        
       
         <div id="navbarBasicExample" className="navbar-menu">
           <div className="navbar-start">
-            <a className="navbar-item" href="/">
-              Home
-            </a>
+            <Link href="/">
+              <a className="navbar-item">
+                Home
+              </a>
+            </Link>
           </div>
       
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <a href="/register" className="button is-primary">
-                  <strong>Sign up</strong>
-                </a>
-                <a href="/login" className="button is-light">
-                  Log in
-                </a>
+                <Link href="/register">
+                  <a className="button is-primary">
+                    <strong>Sign up</strong>
+                  </a>
+                </Link>
+                <Link href="/login">
+                  <a className="button is-light">
+                    Log in
+                  </a>
+                </Link>
               </div>
             </div>
           </div>

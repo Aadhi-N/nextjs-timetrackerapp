@@ -30,12 +30,15 @@ function initialize(passport) {
         passwordField: "password"
     }, authenticateUser));
 
-    passport.serializeUser((user, done) => done(null, user.id)); //stores the user ID in the session cookie
+    //stores the user ID in the session cookie
+    passport.serializeUser((user, done) => done(null, user.id)); 
 
-    passport.deserializeUser((id, done) => { // takes the user id to get the user details from the DB
+    // takes the user id to get the user details from the DB
+    passport.deserializeUser((id, done) => { 
         pool.query(`SELECT * FROM users WHERE id = $1`, [id], (err, results) => {
             if (err) {throw err};
-            return done(null, results.rows[0]) //stores full object into the session
+            //stores full object into the session
+            return done(null, results.rows[0]) 
         })
     })
 };

@@ -52,14 +52,14 @@ app.prepare().then(() => {
   /* Register User */
   server.post("/register", async (req, res) => {
     const {name, email, password, password2} = req.body;
-    console.log(req.body)
+    console.log('req.body', req.body)
     let errors = [];
 
     if (!name || !email || !password || !password2) {
       errors.push("Please enter all fields");
     };
 
-    if (password.length < 1) {
+    if (password.length < 1) { ////////NEED TO CHANGE BACK TO 6
       errors.push("Password should be at least 6 characters");
     };
 
@@ -92,11 +92,29 @@ app.prepare().then(() => {
   });
 
   /* Login User */
-  server.post("/login", passport.authenticate('local', {
-    successRedirect:  "/user/dashboard",
-    failureRedirect: "/login",
-    failureFlash: true
-  }));
+  server.post("/login", (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+      if (err) { throw err };
+      if (!user) {
+        res.json({ errors: "No user exists" })
+      } else {
+        req.logIn(user, (err) => {
+          if (err) { throw err };
+          res.json({ success_msg: JSON.stringify(req.user)})
+          console.log('user', req.user);
+        })
+      }
+
+    })(req, res, next);
+  });
+
+
+  server.post("/logout", (req, res) => {
+    console.log(req.body)
+    req.logOut(); //passportJS function
+    res.json({ success_msg: "You have logged out"})
+  })
+
 
   /* Check if user authenticated to access routes */
   function checkAuthenticated(req, res, next) {
